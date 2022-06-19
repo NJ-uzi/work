@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Hello World</title>
+  <script src="react.development.js"></script>
+  <script src="react-dom.development.js"></script>
+
+  <!-- Don't use this in production: -->
+  <script src="babel.min.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    var { useState, useEffect, useContext, useRef, useCallback, useMemo, useReducer } = React
+
+
+    // useMemo 不是 React.memo
+    // function useState(initialVal) {
+
+    //   return 888
+    // }
+
+    function Example(props) {
+      console.log('Example function component run')
+
+      const [age, setAge] = useState(5)
+      const [count, setCount] = useState(2)
+
+      return (
+        <div>
+          <p>You clicked {count} times {age}</p>
+          <button onClick={() => {
+            setCount(count + 1)
+            setAge(age + 1)
+          }}>
+            Click me
+          </button>
+          <button onClick={() => setAge(age + 1)}>
+            add age
+          </button>
+        </div>
+      );
+    }
+
+
+
+    var ColorContext = React.createContext()
+    ColorContext.displayName = 'ColorContext'
+
+    var ThemeContext = React.createContext()
+    ThemeContext.displayName = 'ThemeContext'
+
+
+    function useCounter() {
+      var [count, setCount] = useState(0)
+
+      function dec() {
+        setCount(count - 1)
+      }
+
+      function inc() {
+        setCount(count + 1)
+      }
+      return [count, dec, inc]
+    }
+
+
+    function Counter() {
+      var [count, dec, inc] = useCounter()
+
+      return (
+        <span>
+          <Button onClick={dec}>-</Button>
+          {count}
+          <MyButton onClick={inc}>+</MyButton>
+        </span>
+      )
+    }
+
+
+
+
+    // 使用自定义hook抽象利用逻辑
+    function useMousePos() {
+      var [pos, setPos] = useState({ x: 0, y: 0 })
+      useEffect(() => {
+        function onMove(e) {
+          setPos({
+            x: e.x,
+            y: e.y,
+          })
+        }
+        window.addEventListener('mousemove', onMove)
+        return () => {
+          window.removeEventListener('mousemove', onMove)
+        }
+      }, [])
+
+      return pos
+    }
+
+    function useTick() {
+      var [tick, setTick] = useState(0)
+
+      useEffect(() => {
+        var id = setInterval(() => {
+          setTick(tick => tick + 1)
+        }, 1000)
+        return () => clearInterval(id)
+      }, [])
+
+      return tick
+    }
+
+    function useMouseAndTick() {
+      var pos = useMousePos()
+      var tick = useTick()
+
+      return {
+        pos, tick
+      }
+    }
+
+    function TestCustomHook() {
+      var { pos, tick } = useMouseAndTick()
+
+      return <div>{pos.x},{pos.y}, {tick}</div>
+    }
+
+    function TestCustomHook2() {
+      var pos = useMousePos()
+      var tick = useTick()
+
+      return <div>{pos.x},{pos.y}, {tick}</div>
+    }
+
+
+    var tickMixin = {
+      componentDidMount() {
+        this.id = setInterval(() => {
+          this.setState({
+            tick: this.state.tick + 1
+          })
+        })
+      },
+      componentWillUnmount() {
+        clearInterval(this.id)
+      }
+    }
+
+    var mousePosMixin = {
+      onMove(e) {
+        this.setState({
+          pos: {
+            x: e.x,
+            y: e.y,
+          },
+        })
+      },
+      componentDidMount() {
+        window.addEventListener('mousemove', this.onMove)
+      },
+      componentWillUnmount() {
+        window.removeEventListener('mousemove', this.onMove)
+      },
+    }
+
+    // var Comp = createReactClass({ // import createReactClass from 'create-react-class'
+    //   mixins: [tickMixin, mousePosMixin],
+    //   getInitialState() {
+
+    //   }
+    // })
+
+
+    class TestMouseAndTick extends React.Component {
+      state = {
+        pos: { x: 0, y: 0 },
+        tick: 0,
+      }
+      onMove = (e) => {
+        this.setState({
+          pos: {
+            x: e.x,
+            y: e.y,
+          },
+        })
+      }
+      componentDidMount() {
+        window.addEventListener('mousemove', this.onMove)
+        this.id = setInterval(() => {
+          this.setState({
+            tick: this.state.tick + 1
+          })
+        })
+      }
+      componentWillUnmount() {
+        window.removeEventListener('mousemove', this.onMove)
+        clearInterval(this.id)
+      }
+      render() {
+        var { pos } = this.state
+        return <div>{pos.x},{pos.y}</div>
+      }
+    }
+
+    class TestMouseAndTick2 extends React.Component {
+
+    }
+
+    const initialState = { count: 0 };
+
+    function reducer(state, action) {
+      switch (action.type) {
+        case 'increment':
+          return { count: state.count + 1 };
+        case 'decrement':
+          return { count: state.count - 1 };
+        default:
+          throw new Error();
+      }
+    }
+
+    function Counter2() {
+      const [state, dispatch] = useReducer(reducer, initialState);
+
+      return (
+        <>
+          Count: {state.count}
+          <button onClick={() => dispatch({ type: 'decrement' })}>-</button>
+          <button onClick={() => dispatch({ type: 'increment' })}>+</button>
+        </>
+      );
+    }
+
+    var Button = React.memo(function Button({ onClick, children }) {
+      console.log('Button render')
+      return <button onClick={onClick}>{children}</button>
+    })
+
+    class MyButton extends React.Component {
+
+      shouldComponentUpdate(nextProps) {
+        if (nextProps.children !== this.props.children) {
+          return true
+        }
+        return false
+      }
+
+      handleClick = (e) => {
+        this.props.onClick(e)
+      }
+
+      render() {
+        console.log('MyButton render')
+
+        var { children } = this.props
+
+        return <button onClick={this.handleClick}>{children}</button>
+      }
+    }
+
+    function App() {
+      var ref1 = useRef()
+
+      console.log(ref1)
+
+      var [showTick, setShowTick] = useState(true)
+
+      return (
+        <React.Fragment>
+          <TestCustomHook />
+          <TestCustomHook2 />
+
+          <TestMouseAndTick />
+          <Counter />
+          <ColorContext.Provider value={showTick}>
+            <div ref={ref1} onClick={() => setShowTick(!showTick)}>
+
+
+              <ThemeContext.Provider value="light">
+              </ThemeContext.Provider>
+
+
+              <Example />
+              <Example />
+              <Example />
+            </div>
+          </ColorContext.Provider>
+        </React.Fragment>
+      )
+    }
+
+
+    const container = document.getElementById('root');
+    const root = ReactDOM.createRoot(container);
+
+    root.render(<App />);
+
+
+
+
+
+
+  </script>
+</body>
+
+</html>

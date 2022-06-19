@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+
+  label {
+    display: inline-block;
+    width: 100px;
+    height: 100px;
+    border: 2px solid black;
+    background-image: url(web_heart_animation.png);
+    background-position: 0 0;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
+    transition: none;
+
+  }
+  input:checked + label {
+    background-position: -2800px 0;
+    transition: 2s steps(28,start);
+  }
+</style>
+<body>
+  <input type="checkbox" id="heart" hidden>
+  <label for="heart"></label>
+</body>
+</html>

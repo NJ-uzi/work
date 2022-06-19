@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+
+<body>
+  <div>
+    Lorem ipsum dolor sit amet consectetur adipisicing elit. Officiis placeat rerum dolor maxime reprehenderit laborum
+    id. Ex quod beatae in porro placeat? Sunt minima impedit provident asperiores temporibus excepturi corporis?
+    <p>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Reprehenderit, sit.
+      <button>BUTTON</button>
+    </p>
+  </div>
+</body>
+
+
+<script>
+
+
+
+  //node.contains(target)
+  //判断node是否包含target
+  // function contains(node, target) {
+  //   while (target) {
+  //     if (node == target) {
+  //       return true
+  //     }
+  //     target = target.parentNode
+  //   }
+  //   return false
+  // }
+
+
+  // var para = document.querySelector('p')
+  // var button = document.querySelector('button')
+  // para.addEventListener('mousedown', function () {
+  //   console.log('parahraph clicked!!')
+  // })
+  // button.addEventListener('mousedown', function () {
+  //   console.log('button clicked!!!')
+  // })
+
+
+  // Array.prototype.slice2 = function (start = 0, end = this.length) {
+  //   var result = []
+  //   for (let i = start; i < end; i++) {
+  //     result.push[i]
+  //   }
+  //   return result
+  // }
+
+
+  // function cloneNode(node) {
+  //   if (node.nodeType == document.ELEMENT_NODE) {
+  //     var el = document.createElement(node.tagName)
+
+  //     var names = node.getAttributeNames()
+  //     for (var name of names) {
+  //       el.setAttribute(name, node.getAttribute(name))
+  //     }
+
+  //     for (var child of node.childNodes) {
+  //       el.appendChild(cloneNode(child))
+  //     }
+  //     return el
+  //   } else if (node.nodeType == document.TEXT_NODE) {
+  //     return document.createTextNode(node.nodeValue)
+  //   } else if (node.nodeType == document.COMMENT_NODE) {
+  //     return document.createComment(node.nodeValue)
+  //   }
+  // }
+
+  // function getOuterHTML(node) {
+
+  // }
+
+  // function normalize(node) {
+  //   var str = ''
+  //   for (let child of node) {
+  //     if (child.nodeType == document.TEXT_NODE) {
+  //       str += child.nodeValue
+  //       node.removeChild(child)
+  //     } else {
+  //       node.insertBefore(document.createTextNode(str), child)
+  //       str = ''
+  //     }
+  //   }
+  //   if (str.length) {
+  //     node.appendChild(document.createTextNode(str))
+  //   }
+  // }
+
+
+
+  // var div = document.querySelect('div')
+  // div.addEventListener('click', debounce(function (e) {
+
+  // }, 1000))
+
+  // function debounce(func, time) {
+  //   var timeId
+
+  //   return function (...args) {
+  //     clearTimeout(timeId)
+
+  //     timeId = setTimeout(() => {
+  //       fucn.call(this, ...args)
+  //     }, time)
+  //   }
+  // }
+
+  // function throttle(func, time) {//2022-3-7-15-15
+  //   var timeId
+  //   var scheduled = false
+  //   var event
+  //   return function (e) {
+  //     event = e
+  //     // clearTimeout(timeId)
+  //     if (!scheduled) {
+  //       scheduled = true
+  //       timeId = setTimeout(() => {
+  //         func(event)
+  //         scheduled = false
+  //       }, time)
+  //     }
+  //   }
+  // }
+
+
+  // function throttle2(func, time) {
+  //   var lastTime = 0
+  //   return function (e) {
+  //     var now = Date.now()
+  //     if (now - lastTime > time) {
+  //       func(e)
+  //       lastTime = now
+  //     }
+  //   }
+  // }
+
+
+  //剑指04
+  // var findNumberIn2DArray = function (matrix, target) {
+  //   if (!matrix.length) {
+  //     return false
+  //   }
+  //   var rows = matrix.length
+  //   var cols = 0
+  //   if (matrix[0].length) {
+  //     cols = matrix[0].length
+  //   }
+  //   if (rows > 0 && cols > 0) {
+  //     let row = 0
+  //     let col = cols - 1
+  //     while (row < rows && cols >= 0) {
+  //       if (matrix[row][col] == target) {
+  //         return true
+  //       } else if (matrix[row][col] > target) {
+  //         col--
+  //       } else {
+  //         row++
+  //       }
+  //     }
+  //   }
+  //   return false
+  // };
+
+  // var matrix = [
+  //   [1, 4, 7, 11, 15],
+  //   [2, 5, 8, 12, 19],
+  //   [3, 6, 9, 16, 22],
+  //   [10, 13, 14, 17, 24],
+  //   [18, 21, 23, 26, 30]
+  // ]
+  // var target = 130
+
+  // console.log(findNumberIn2DArray(matrix, target))
+
+</script>
+
+</html>

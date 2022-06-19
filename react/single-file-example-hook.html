@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>HooK learn</title>
+  <script src="react.development.js"></script>
+  <script src="react-dom.development.js"></script>
+
+  <!-- Don't use this in production: -->
+  <script src="babel.min.js"></script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    var { useState, useEffect, useContext, useRef, useCallback, useMemo, useReducer } = React
+
+    function Examlpe(props) {
+      const [count, setCount] = useState(0)
+      const [age, setAge] = useState(20)
+
+      return (
+        <div>
+          <p>You click {count} times </p>
+          <p>{age + 2000},you are {age} years old</p>
+          <button onClick={() => { setCount(count + 1) }}>
+            Click me times++
+          </button>
+
+          <button onClick={() => { setAge(age + 1) }}>
+            Click me age++
+          </button>
+        </div>
+      )
+    }
+
+    function useCounter() {
+      var [count, setCount] = useState(0)
+
+      function dec() {
+        setCount(count - 1)
+      }
+      function inc() {
+        setCount(count + 1)
+      }
+      return [count, dec, inc]
+    }
+
+    function Counter() {
+      //从useCounter() 中解构获得count变量 dec/inc函数
+      var [count, dec, inc] = useCounter()
+
+      return (
+        <span>
+          <Button onClick={dec}>-</Button>
+          {count}
+          <MyButton onClick={inc}>+</MyButton>
+        </span>
+      )
+    }
+
+    var Button = React.memo(function Button({ onClick, children }) {
+      console.log('Button render memo')
+      return <button onClick={onClick}>{children}</button>
+    })
+
+    class MyButton extends React.Component {
+      shouldCompontentUpdate(nextProps) {
+        if (nextProps.children !== this.props.children) {
+          return ture
+        }
+        return false
+      }
+
+      handleClick = (e) => {
+        this.props.onClick(e)
+      }
+
+      render() {
+        console.log('MyButton render class')
+
+        var { children } = this.props
+
+        return <button onClick={this.handleClick}>{children}</button>
+      }
+    }
+
+
+
+    function App() {
+
+      return (
+        <React.Fragment>
+          <Counter />
+          <div>
+            <Examlpe />
+            <Examlpe />
+          </div>
+        </React.Fragment>
+      )
+    }
+
+
+    const container = document.getElementById('root');
+    const root = ReactDOM.createRoot(container);
+
+    root.render(<App />);
+
+
+
+
+
+
+  </script>
+</body>
+
+</html>

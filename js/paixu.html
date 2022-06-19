@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<script>
+  //生成n个由n以内的整数组成的数组
+  function randomAry(n) {
+    var ary = []
+    for (let i = 0; i < n; i++) {
+      ary.push(Math.random() * n | 0)
+    }
+    return ary
+  }
+  //交换数组中下标为i 和 j 的元素
+  swap = function (ary, i, j) {
+    var mid = 0
+    mid = ary[j]
+    ary[j] = ary[i]
+    ary[i] = mid
+  }
+
+  //插入排序
+  function insertSort(ary) {
+    var leng = ary.lrngth
+    var x = 0
+
+    for (let i = 1; i < leng; i++) {
+      x = ary[i]
+      for (let j = i - 1; j >= 0; j--) {
+        if (t < ary[j]) {
+          ary[j + 1] = ary[j]
+        } else {
+          break
+        }
+      }
+      ary[j + 1] = t
+    }
+    return ary
+  };
+  //冒泡排序                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+  function bubbleSort(ary) {
+    var leng = ary.length
+    for (let i = leng - 2; i >= 0; i--) {
+      var flag = false
+      for (let j = 0; j <= i; j++) {
+        if (ary[j] > ary[j + 1]) {
+          flag = !flag
+          // var t = ary[j]
+          // ary[j] = ary[j + 1]
+          // ary[j + 1] = t
+          //替换swap函数
+          swap(ary, j, j + 1)
+        }
+      }
+      if (flag) {
+        break
+      }
+    }
+    return ary
+  }
+  //选择排序
+  function selectSort(ary) {
+    for (let i = 0; i < ary.length - 1; i++) {
+      var minIdx = i
+      // min = min > ary[i] ? ary[i] : min
+      for (let j = i + 1; j < ary.length; j++) {
+        if (ary[j] < ary[minIdx]) {
+          minIdx = j
+        }
+      }
+      swap(ary, i, minIdx)
+    }
+    return ary
+  }
+  //归并排序
+  function mergeSort(ary) {
+    if (ary.length < 2) {
+      return ary
+    }
+    //分两半
+    var mid = Math.floor(ary.length / 2)
+    var left = ary.slice(0, mid)
+    var right = ary.slice(mid)
+    //左边排序
+    mergeSort(left)
+    //右边排序
+    mergeSort(right)
+    //合并
+    var i = 0
+    var j = 0
+    var k = 0
+    while (i < left.length && j < right.length) {
+      if (left[i] < right[j]) {
+        ary[k++] = left[i++]
+      } else {
+        ary[k++] = right[j++]
+      }
+    }
+    while (i < left.length) {
+      ary[k++] = left[i++]
+    }
+    while (j < right.length) {
+      ary[k++] = right[j++]
+    }
+    return ary
+  }
+
+  //快速排序（1）
+  // 对数组ary的从start到end（包含）的元素进行快排, 默认是全数组
+  function quickSort(ary, start = 0, end = ary.length - 1) {
+    if (start >= end) {
+      return ary
+    }
+    var pivotIdx = Math.floor(Math.random() * (end - start + 1) + start)
+    //随机选取哨兵元素下标    (end-start+1) 不能直接写成ary.length-start因为每次递归end的值都是在变化的
+    var pivot = ary[pivotIdx]//哨兵元素
+    swap(ary, pivotIdx, end) //哨兵元素放到最后
+
+    var i = start
+    for (var j = start; j < end; j++) {// 不遍历放在最后的哨兵元素
+      if (ary[j] < pivot) {
+        swap(ary, i++, j)
+      }
+    }
+    swap(ary, i, end) // 将哨兵元素换回中间
+
+    //此时，i位置是哨兵元素
+    //i+1到j之间是[大于等于]哨兵元素
+    //start到i-1是[小于]哨兵元素
+    //i位置的数本身不用再动了，因为哨兵元素在有序后也一定会放在i位置
+    quickSort(ary, start, i - 1)
+    quickSort(ary, i + 1, end)
+    return ary
+  }
+
+
+
+  //快排（2）
+  // 对数组ary的从start到end（包含）的元素进行快排
+  // predicate函数针对数组中的元素返回一个确定其顺序的数值
+  // 排序算法会根据这个数值来元素元素在数组中的有序位置
+  function qSortBy(ary, predicate = it => it, start = 0, end = ary.length - 1) {
+    if (start >= end) {
+      return ary
+    }
+
+    var pivotIdx = Math.floor(Math.random() * (end - start + 1) + start)
+    var pivot = ary[pivotIdx]
+
+    swap(ary, pivotIdx, end)
+
+    var i = start
+
+    // 不遍历放在最后的哨兵元素
+    for (var j = start; j < end; j++) {
+      if (predicate(ary[j]) < predicate(pivot)) {
+        swap(ary, i, j)
+        i++
+      }
+    }
+
+    swap(ary, i, end) // 将哨兵元素换回中间
+
+    //此时，i位置是哨兵元素
+    //i+1到j之间是[大于等于]哨兵元素
+    //start到i-1是[小于]哨兵元素
+    //i位置的数本身不用再动了，因为哨兵元素在有序后也一定会放在i位置
+    qSortBy(ary, predicate, start, i - 1)
+    qSortBy(ary, predicate, i + 1, end)
+
+    return ary
+  }
+
+  // qSortBy(ancestry, it => -it.born)
+
+
+
+
+  //快排(3)
+  // 对数组ary的从start到end（包含）的元素进行快排
+  // compare函数接收数组中的两个元素，返回正，负，零以告诉排序算法谁大谁小或再者相同
+  function qSortWith(ary, compare = (a, b) => a - b, start = 0, end = ary.length - 1) {
+    if (start >= end) {
+      return ary
+    }
+
+    var pivotIdx = Math.floor(Math.random() * (end - start + 1) + start)
+    var pivot = ary[pivotIdx]
+
+    swap(ary, pivotIdx, end)
+
+    var i = start
+
+    // 不遍历放在最后的哨兵元素
+    for (var j = start; j < end; j++) {
+      if (compare(ary[j], pivot) < 0) {
+        swap(ary, i, j)
+        i++
+      }
+    }
+
+    swap(ary, i, end) // 将哨兵元素换回中间
+
+    //此时，i位置是哨兵元素
+    //i+1到j之间是[大于等于]哨兵元素
+    //start到i-1是[小于]哨兵元素
+    //i位置的数本身不用再动了，因为哨兵元素在有序后也一定会放在i位置
+    qSortWith(ary, compare, start, i - 1)
+    qSortWith(ary, compare, i + 1, end)
+
+    return ary
+  }
+
+
+
+  // qSortWith(ancestry, (a, b) => a.born - b.born)
+
+  // debugger
+  // var ary = [8, 6, 5, 12, 23]
+  // console.log(quickSort(ary))
+</script>
+
+<body>
+
+</body>
+
+</html>
